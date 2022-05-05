@@ -12,6 +12,7 @@ def main():
     print("--------------------------------")
     print(cfg[:1])
     print("--------------------------------")
+    print(f"O valor de teste é {json.loads(cfg)['test']}")
 
 
 if __name__ == '__main__':
