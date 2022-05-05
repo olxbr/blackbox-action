@@ -7,7 +7,7 @@ def main():
     parser.add_argument("-c", "--config", help="Action configs", default="")
     args = parser.parse_args()
     cfg = args.config
-    print(cfg)
+    print(cfg["test"])
 
 
 if __name__ == '__main__':
