@@ -7,8 +7,11 @@ def main():
     parser.add_argument("-c", "--config", help="Action configs", default="")
     args = parser.parse_args()
     cfg = args.config
-    j = json.loads(cfg)
-    print(f"O valor de teste é {j['test']}")
+    print("--------------------------------")
+    print(cfg[1:])
+    print("--------------------------------")
+    print(cfg[:1])
+    print("--------------------------------")
 
 
 if __name__ == '__main__':
