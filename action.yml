@@ -10,5 +10,5 @@ runs:
     - uses: actions/setup-python@v3
       with:
         python-version: '3.9.12'
-    - run: python ${{ github.action_path }}/src/entrypoint.py -c "${{ inputs.configs }}"
+    - run: python ${{ github.action_path }}/src/entrypoint.py -c '${{ inputs.configs }}'
       shell: bash
