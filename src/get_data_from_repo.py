@@ -234,7 +234,7 @@ def compressor(repo: str = "", **kwargs) -> dict:
     commits = kwargs.get("commits", [{}])
     packages = kwargs.get(
         "packages",
-        [{"type": None, "name": "not_a_pkg", "version": None, "bom-ref": None}],
+        [{"type": None, "name": "not_a_pkg", "version": None, "bom_ref": None}],
     )
 
     structure = {
@@ -258,7 +258,7 @@ def compressor(repo: str = "", **kwargs) -> dict:
                 "name": pkg["name"],
                 "type": pkg["type"],
                 "version": pkg["version"],
-                "bom-ref": pkg["bom-ref"],
+                "bom_ref": pkg["bom-ref"],
             }
         except KeyError:
             log.warning(
@@ -268,7 +268,7 @@ def compressor(repo: str = "", **kwargs) -> dict:
                 "name": pkg["name"],
                 "type": pkg["type"],
                 "version": None,
-                "bom-ref": None,
+                "bom_ref": None,
             }
         structure["packages"].append(pkg_structure)
     return structure
