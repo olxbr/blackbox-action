@@ -68,7 +68,7 @@ def get_repo_age_metadata_commit_based(default_branch: str = "main") -> float:
     try:
         commits = list(repo.iter_commits(default_branch, all=True))
         first_commit_datetime = commits[-1].committed_datetime
-        last_commit_datetime = commits[-1].committed_datetime
+        last_commit_datetime = commits[0].committed_datetime
         first_commit_str = first_commit_datetime.strftime("%Y-%m-%d %z")
         last_commit_str = last_commit_datetime.strftime("%Y-%m-%d %z")
     except GitCommandError:
@@ -83,8 +83,9 @@ def get_repo_age_metadata_commit_based(default_branch: str = "main") -> float:
 
 def get_commits_from_repo(default_branch: str = "main") -> list:
     try:
-        commits = list(repo.iter_commits(default_branch))
-    except GitCommandError:
+        commits = list(repo.iter_commits(default_branch, all=True))
+    except GitCommandError as e:
+        log.warning(e)
         log.warning(f"Failed to get Commits! Using default [] (branch: {default_branch})")
         return [], [{}]
     commits_struct = [
