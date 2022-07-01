@@ -83,8 +83,9 @@ def get_repo_age_metadata_commit_based(default_branch: str = "main") -> float:
 
 def get_commits_from_repo(default_branch: str = "main") -> list:
     try:
-        commits = list(repo.iter_commits(default_branch))
-    except GitCommandError:
+        commits = list(repo.iter_commits(default_branch, all=True))
+    except GitCommandError as e:
+        log.warning(e)
         log.warning(f"Failed to get Commits! Using default [] (branch: {default_branch})")
         return [], [{}]
     commits_struct = [
