@@ -30,6 +30,7 @@ json_obj = {
     }
 }
 
+
 class GetData(unittest.TestCase):
     @patch(
         "gh_api_requester.GHAPIRequests.get", side_effect=test_utils.mocked_requests_get
@@ -92,12 +93,12 @@ class GetData(unittest.TestCase):
     def test_get_repo_last_commit_date(self, mock_repo):
         mock_iterable_last = mock.Mock()
         mock_iterable_first = mock.Mock()
-        mock_repo.iter_commits.return_value = [mock_iterable_first, mock_iterable_last]
-        mock_iterable_first.committed_datetime = datetime.datetime.strptime(
-            "2021-04-04 +0000", "%Y-%m-%d %z"
-        )
+        mock_repo.iter_commits.return_value = [mock_iterable_last, mock_iterable_first]
         mock_iterable_last.committed_datetime = datetime.datetime.strptime(
             "2022-04-04 +0000", "%Y-%m-%d %z"
+        )
+        mock_iterable_first.committed_datetime = datetime.datetime.strptime(
+            "2021-04-04 +0000", "%Y-%m-%d %z"
         )
 
         (
@@ -264,7 +265,7 @@ class GetData(unittest.TestCase):
 
         for obj in s3_bucket.objects.all():
             key = obj.key
-            self.assertRegex(key, r'\d{4}-\d{2}-\d{2}-[-\w]+-\d+.parquet$')  # fmt: skip
+            self.assertRegex(key, r'\/(dt=)?\d{4}-\d{2}-\d{2}(-|\/)?[-\w]+-\d+.(parquet|json)$')  # fmt: skip
 
     def test_compressor(self):
         expected_output = {
@@ -289,8 +290,8 @@ class GetData(unittest.TestCase):
                 {
                     "name": "not_a_pkg",
                     "type": "not_pkg",
-                    "version": 0.0,
-                    "bom-ref": "none-ref",
+                    "version": None,
+                    "bom_ref": None,
                 }
             ],
         }
@@ -299,8 +300,8 @@ class GetData(unittest.TestCase):
             {
                 "type": "not_pkg",
                 "name": "not_a_pkg",
-                "version": 0.0,
-                "bom-ref": "none-ref",
+                "version": None,
+                "bom_ref": None,
             }
         ]
         sbom_data = get_data_from_repo.compressor(
@@ -341,7 +342,7 @@ class GetData(unittest.TestCase):
                     "name": "not_a_pkg",
                     "type": "not_pkg",
                     "version": None,
-                    "bom-ref": None,
+                    "bom_ref": None,
                 }
             ],
         }
@@ -391,7 +392,7 @@ class GetData(unittest.TestCase):
                     "name": "not_a_pkg",
                     "type": "not_pkg",
                     "version": None,
-                    "bom-ref": None,
+                    "bom_ref": None,
                 }
             ],
         }
@@ -400,7 +401,7 @@ class GetData(unittest.TestCase):
             {
                 "type": "not_pkg",
                 "name": "not_a_pkg",
-                "bom-ref": 0.0,
+                "bom_ref": 0.0,
             }
         ]
         sbom_data = get_data_from_repo.compressor(
